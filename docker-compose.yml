@@ -15,7 +15,7 @@ services:
     ports:
       - "5433:5432"
     environment:
-      POSTGRES_DB: "agendamentos"
+      POSTGRES_DB: "schedules"
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "root"
     networks:
