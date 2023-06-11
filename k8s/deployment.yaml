@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: agendamento
+spec:
+  selector:
+    matchLabels:
+      app: agendamento
+  template:
+    metadata:
+      labels:
+        app: agendamento
+    spec:
+      containers:
+        - name: agendamento
+          image: agendamento
+          ports:
+            - containerPort: 8080
