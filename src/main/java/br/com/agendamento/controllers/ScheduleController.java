@@ -11,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.List;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("schedules")
@@ -27,6 +30,18 @@ public class ScheduleController {
     @PostMapping
     public ResponseEntity<ScheduleResponse> createSchedule(@RequestBody ScheduleRequest scheduleRequest){
         ScheduleResponse response = scheduleService.createSchedule(scheduleRequest);
+        return ResponseEntity.ok(response);
+    }
+
+    @Operation(summary = "Get availables times by date")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "403", description = "You do not have permission to access this resource."),
+            @ApiResponse(responseCode = "500", description = "An exception was generated"),
+    })
+    @GetMapping("filled-times/{date}")
+    public ResponseEntity<List<String>> getFilledTimesByDate(@PathVariable LocalDate date){
+        List<String> response = scheduleService.getFilledTimesByDate(date);
         return ResponseEntity.ok(response);
     }
 }

@@ -5,11 +5,13 @@ import br.com.agendamento.dtos.ScheduleResponse;
 import br.com.agendamento.models.Schedule;
 import br.com.agendamento.repositories.ScheduleRepository;
 import br.com.agendamento.services.ScheduleService;
-import io.swagger.v3.oas.annotations.servers.Server;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @Log4j2
 @Service
@@ -32,5 +34,14 @@ public class ScheduleServiceImpl implements ScheduleService {
             log.error("Erro ao salvar agendamento {}", scheduleRequest);
             throw new RuntimeException("Erro ao salvar agendamento", ex);
         }
+    }
+
+    @Override
+    public List<String> getFilledTimesByDate(LocalDate date) {
+        log.info("Início: Buscar Horários pela data {}", date);
+        List<Schedule> schedules = scheduleRepository.findByDate(date)
+                .orElseThrow(() -> new RuntimeException("Não foi possível achar horários preenchidos nessa data"));
+        log.info("Fim: Buscar Horários pela data {}", date);
+        return schedules.stream().map(Schedule::getTime).toList();
     }
 }
